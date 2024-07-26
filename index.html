@@ -89,14 +89,15 @@
     </div>
     <!-- data coming  from store -->
 
-    <div class="bg-gray-100 p-4 max-w-5xl mx-auto my-4">
+    <div class="bg-gray-100 p-4 max-w-5xl mx-auto my-4 h-[44rem]">
       <h1 class="text-3xl">Data coming from store</h1>
       <div x-data>
         <h2
           x-text="$store.currentUser.username"
-          class="text-3xl font-bold text-center"
+          class="text-3xl font-bold text-center mb-4"
         ></h2>
         <img
+          width="600"
           loading="lazy"
           :src="$store.currentUser.posts[0].image"
           :alt="$store.currentUser.posts[0].title"
@@ -110,6 +111,145 @@
           x-text="$store.currentUser.posts[0].description"
           class="text-lg text-gray-600"
         ></p>
+      </div>
+    </div>
+    <!-- x-init -->
+    <div
+      class="bg-gray-100 p-4 max-w-5xl mx-auto my-4"
+      x-data="{
+      init() {
+        console.log('i am initialized')
+      }
+    }"
+    >
+      <h1 class="text-3xl">x-init</h1>
+      <div
+        x-data="{todo: {}}"
+        x-init="todo = await (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json()"
+      >
+        <p x-text="todo.title"></p>
+      </div>
+    </div>
+    <!-- scoping -->
+    <div class="bg-gray-100 p-4 max-w-5xl mx-auto my-4">
+      <h1 class="text-3xl">Scoping</h1>
+      <div
+        x-data="{
+        name: 'john doe',
+        age: 25,
+        gender: 'male',
+      }"
+      >
+        <div class="bg-green-300">
+          <h2 class="text-2xl">first variable scope</h2>
+          <p x-text="name" class="text-xl my-4 text-gray-800"></p>
+          <p x-text="age" class="text-xl my-4 text-gray-800"></p>
+          <p x-text="gender" class="text-xl my-4 text-gray-800"></p>
+        </div>
+        <div
+          x-data="{
+          name: 'ashraf sayed',
+          age: 38
+        }"
+        >
+          <div class="bg-red-300">
+            <h2 class="text-2xl">second variable scope</h2>
+            <p x-text="name" class="text-xl my-4 text-gray-800"></p>
+            <p x-text="age" class="text-xl my-4 text-gray-800"></p>
+          </div>
+          <div
+            x-data="{
+          name: 'ali mohammed'
+        }"
+          >
+            <div class="bg-blue-300">
+              <h2 class="text-2xl">third variable scope</h2>
+              <p x-text="name" class="text-xl my-4 text-gray-800"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- getters and setters -->
+    <div
+      class="bg-gray-100 p-4 max-w-5xl mx-auto my-4"
+      x-data="{
+      open: false,
+      get isOpen() { 
+        return this.open = !this.open
+      }
+    }"
+    >
+      <h1 class="text-3xl">Getters and setters</h1>
+      <button
+        @click="isOpen"
+        class="bg-green-500 text-white outline-none border-none p-2 rounded-lg"
+      >
+        Open/close
+      </button>
+      <div x-show="open">this is the content</div>
+    </div>
+    <!-- x-show and x-transition -->
+    <div
+      class="bg-gray-100 p-4 max-w-5xl mx-auto my-4"
+      x-data="{
+      open: false,
+      toggle() { 
+        return this.open = !this.open
+      }
+    }"
+    >
+      <h1 class="text-3xl">x-show and x-transition</h1>
+      <button
+        @click="toggle"
+        class="bg-green-500 text-white outline-none border-none p-2 rounded-lg mb-4"
+      >
+        toggle show
+      </button>
+      <div x-show="open" x-transition.duration.500ms>this is the content</div>
+    </div>
+
+    <!-- cards -->
+    <div class="bg-gray-100 p-4 max-w-5xl mx-auto my-4">
+      <h1 class="text-3xl">Cards</h1>
+
+      <div
+        class="grid grid-cols-4 gap-4"
+        x-data="{ hovered: 1,
+        init(){
+          this.hovered = 1
+          console.log(this.hovered)
+        }
+       }"
+      >
+        <div
+          :class="hovered === 1 ? 'bg-blue-200' : 'bg-gray-200' "
+          @mouseover="hovered = 1"
+          class="cursor-pointer p-4 rounded-lg"
+        >
+          card one
+        </div>
+        <div
+          :class="hovered === 2 ? 'bg-blue-200' : 'bg-gray-200'"
+          @mouseover="hovered = 2"
+          class="cursor-pointer p-4 rounded-lg"
+        >
+          card two
+        </div>
+        <div
+          :class="hovered === 3 ? 'bg-blue-200' : 'bg-gray-200'"
+          class="cursor-pointer p-4 rounded-lg"
+          @mouseover="hovered = 3"
+        >
+          card three
+        </div>
+        <div
+          :class="hovered === 4 ? 'bg-blue-200' : 'bg-gray-200'"
+          @mouseover="hovered = 4"
+          class="cursor-pointer p-4 rounded-lg"
+        >
+          card four
+        </div>
       </div>
     </div>
   </body>
