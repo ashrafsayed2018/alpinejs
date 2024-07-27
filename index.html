@@ -206,47 +206,168 @@
       >
         toggle show
       </button>
-      <div x-show="open" x-transition.duration.500ms>this is the content</div>
+      <div
+        x-show="open"
+        x-transition:enter.duration.500ms
+        x-transition:leave.duration.1000ms
+      >
+        this is the content
+      </div>
     </div>
 
+    <!-- x-if -->
+
+    <div
+      class="bg-gray-100 p-4 max-w-5xl mx-auto my-4"
+      x-data="{
+      open: false,
+      toggle() { 
+        return this.open = !this.open
+      }
+    }"
+    >
+      <h1 class="text-3xl mb-4">x-if works on only on template element</h1>
+      <button
+        @click="toggle"
+        class="bg-green-500 text-white outline-none border-none p-2 rounded-lg mb-4"
+      >
+        toggle
+      </button>
+      <template x-if="open">
+        <p class="text-xl">
+          this is the content of x-if and it works on only on template element
+          and has no transition
+        </p>
+      </template>
+    </div>
+    <!-- x-for -->
+
+    <div
+      class="bg-gray-100 p-4 max-w-5xl mx-auto my-4"
+      x-data="{
+      posts: [
+        {
+          id: 1,
+          title: 'Post 1',
+          description: 'Post 1 description',
+          image: 'https://picsum.photos/200/300',},
+        {
+          id: 2,
+          title: 'Post 2',
+          description: 'Post 2 description',
+          image: 'https://picsum.photos/200/300',},
+        {
+          id: 3,
+          title: 'Post 3',
+          description: 'Post 3 description',
+          image: 'https://picsum.photos/200/300',},
+      ]
+    }"
+    >
+      <h1 class="text-3xl mb-4">
+        x-for for loop used only on template element
+      </h1>
+      <template x-for="post in posts" :key="post.id" class="mb-4">
+        <div>
+          <img
+            width="600"
+            loading="lazy"
+            :src="post.image"
+            :alt="post.title"
+            class="w-full h-[32rem] object-cover mb-4"
+          />
+          <p x-text="post.title" class="text-2xl text-gray-800"></p>
+          <p x-text="post.description" class="text-lg text-gray-600"></p>
+        </div>
+      </template>
+    </div>
+    <!-- x for in a range -->
+    <div x-data class="bg-gray-100 p-4 max-w-5xl mx-auto my-4">
+      <h1 class="text-3xl mb-4">x-for in a range</h1>
+      <template x-for="i in 10" :key="i" class="mb-4">
+        <div>
+          <p
+            x-text="i"
+            class="text-2xl bg-green-800 text-white mb-4 p-2 rounded-lg"
+          ></p>
+        </div>
+      </template>
+    </div>
+    <!-- x-bind class -->
+
+    <div class="bg-gray-100 p-4 max-w-5xl mx-auto my-4">
+      <h1 class="text-3xl mb-4">x-bind attributes [class,id,style,href]</h1>
+      <div
+        x-data="{
+          clicked: false
+      }"
+      >
+        <button
+          @click="clicked = !clicked"
+          class="text-white outline-none border-none p-2 rounded-lg mb-4"
+          :class="clicked ? 'bg-red-500' : 'bg-blue-500'"
+        >
+          click
+        </button>
+        <div
+          class="h-96 w-full transition duration-1000 ease-in-out"
+          :class="clicked ? 'bg-red-500' : 'bg-blue-500'"
+          :style="clicked ? 'background-image: url(https://picsum.photos/200/300);background-size:100%;background-position:center' : 'background-color: blue'"
+        ></div>
+      </div>
+    </div>
+
+    <!-- challenge -->
+    <div
+      x-data="{colors: ['red','green','blue']}"
+      class="bg-gray-100 p-4 max-w-5xl mx-auto my-4"
+    >
+      <h1 class="text-3xl mb-4">Challenge</h1>
+      <template x-for="color in colors">
+        <div
+          :style="{'background-color': color}"
+          class="h-16 w-1/3 text-white text-center inline-flex items-center justify-center mb-4"
+          x-text="color"
+        ></div>
+      </template>
+    </div>
     <!-- cards -->
     <div class="bg-gray-100 p-4 max-w-5xl mx-auto my-4">
-      <h1 class="text-3xl">Cards</h1>
+      <h1 class="text-3xl mb-4">Cards</h1>
 
       <div
         class="grid grid-cols-4 gap-4"
         x-data="{ hovered: 1,
         init(){
           this.hovered = 1
-          console.log(this.hovered)
         }
        }"
       >
         <div
-          :class="hovered === 1 ? 'bg-blue-200' : 'bg-gray-200' "
+          :class="hovered === 1 ? 'bg-white shadow-xl  text-2xl font-semibold capitalize text-gray-700 hover:uppercase' : 'bg-gray-200' "
           @mouseover="hovered = 1"
-          class="cursor-pointer p-4 rounded-lg"
+          class="cursor-pointer p-4 rounded-lg transiton-all duration-500 ease-in-out"
         >
           card one
         </div>
         <div
-          :class="hovered === 2 ? 'bg-blue-200' : 'bg-gray-200'"
+          :class="hovered === 2 ? 'bg-white shadow-xl text-2xl font-semibold capitalize text-gray-700 hover:uppercase' : 'bg-gray-200'"
           @mouseover="hovered = 2"
-          class="cursor-pointer p-4 rounded-lg"
+          class="cursor-pointer p-4 rounded-lg transiton-all duration-500 ease-in-out"
         >
           card two
         </div>
         <div
-          :class="hovered === 3 ? 'bg-blue-200' : 'bg-gray-200'"
-          class="cursor-pointer p-4 rounded-lg"
+          :class="hovered === 3 ? 'bg-white shadow-xl text-2xl font-semibold capitalize text-gray-700 hover:uppercase' : 'bg-gray-200'"
           @mouseover="hovered = 3"
+          class="cursor-pointer p-4 rounded-lg transiton-all duration-500 ease-in-out"
         >
           card three
         </div>
         <div
-          :class="hovered === 4 ? 'bg-blue-200' : 'bg-gray-200'"
+          :class="hovered === 4 ? 'bg-white shadow-xl text-2xl font-semibold capitalize text-gray-700 hover:uppercase' : 'bg-gray-200'"
           @mouseover="hovered = 4"
-          class="cursor-pointer p-4 rounded-lg"
+          class="cursor-pointer p-4 rounded-lg transiton-all duration-500 ease-in-out"
         >
           card four
         </div>
